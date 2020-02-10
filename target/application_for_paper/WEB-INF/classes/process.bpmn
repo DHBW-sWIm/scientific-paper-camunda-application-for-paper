@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="3.5.0">
+  <bpmn:process id="application_for_paper" name="application_for_paper" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_0nnztbh" name="PA application is uploaded">
+      <bpmn:outgoing>SequenceFlow_0wym2k9</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:dataStoreReference id="DataStoreReference_0lqacir" />
+    <bpmn:serviceTask id="ServiceTask_05utv6i" name="Send mail to corporate partner with token" camunda:class="com.camunda.demo.application_for_paper.sendmail_cp_Delegate">
+      <bpmn:incoming>SequenceFlow_1kehh3d</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_0fjjsyu</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:parallelGateway id="ParallelGateway_1e4wi9w">
+      <bpmn:incoming>SequenceFlow_1g89h5s</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1kehh3d</bpmn:outgoing>
+      <bpmn:outgoing>SequenceFlow_1xvb2uz</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:serviceTask id="ServiceTask_146jqik" name="Send mail to scientific supervisor" camunda:class="com.camunda.demo.application_for_paper.sendmail_sp_Delegate">
+      <bpmn:incoming>SequenceFlow_1xvb2uz</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1x26pns</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="EndEvent_12xjksn">
+      <bpmn:incoming>SequenceFlow_192sft4</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:inclusiveGateway id="InclusiveGateway_1sog749">
+      <bpmn:incoming>SequenceFlow_0fjjsyu</bpmn:incoming>
+      <bpmn:incoming>SequenceFlow_1x26pns</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_192sft4</bpmn:outgoing>
+    </bpmn:inclusiveGateway>
+    <bpmn:serviceTask id="ServiceTask_167mwc9" name="Receive data via API and save in database" camunda:class="com.camunda.demo.application_for_paper.getArray_Delegate">
+      <bpmn:incoming>SequenceFlow_0wym2k9</bpmn:incoming>
+      <bpmn:outgoing>SequenceFlow_1g89h5s</bpmn:outgoing>
+      <bpmn:dataOutputAssociation id="DataOutputAssociation_0zmo7em">
+        <bpmn:targetRef>DataStoreReference_0lqacir</bpmn:targetRef>
+      </bpmn:dataOutputAssociation>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="SequenceFlow_0wym2k9" sourceRef="StartEvent_0nnztbh" targetRef="ServiceTask_167mwc9" />
+    <bpmn:sequenceFlow id="SequenceFlow_1g89h5s" sourceRef="ServiceTask_167mwc9" targetRef="ParallelGateway_1e4wi9w" />
+    <bpmn:sequenceFlow id="SequenceFlow_1kehh3d" sourceRef="ParallelGateway_1e4wi9w" targetRef="ServiceTask_05utv6i" />
+    <bpmn:sequenceFlow id="SequenceFlow_0fjjsyu" sourceRef="ServiceTask_05utv6i" targetRef="InclusiveGateway_1sog749" />
+    <bpmn:sequenceFlow id="SequenceFlow_1xvb2uz" sourceRef="ParallelGateway_1e4wi9w" targetRef="ServiceTask_146jqik" />
+    <bpmn:sequenceFlow id="SequenceFlow_1x26pns" sourceRef="ServiceTask_146jqik" targetRef="InclusiveGateway_1sog749" />
+    <bpmn:sequenceFlow id="SequenceFlow_192sft4" sourceRef="InclusiveGateway_1sog749" targetRef="EndEvent_12xjksn" />
+    <bpmn:textAnnotation id="TextAnnotation_0l7t4up">
+      <bpmn:text>Data: 
+Assignment_ID
+Scientific_Supervisor_ID
+Student_ID</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1sloh1q" sourceRef="ServiceTask_167mwc9" targetRef="TextAnnotation_0l7t4up" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="application_for_paper">
+      <bpmndi:BPMNShape id="StartEvent_0nnztbh_di" bpmnElement="StartEvent_0nnztbh">
+        <dc:Bounds x="182" y="212" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="160" y="255" width="81" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_0lqacir_di" bpmnElement="DataStoreReference_0lqacir">
+        <dc:Bounds x="315" y="348" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_05utv6i_di" bpmnElement="ServiceTask_05utv6i">
+        <dc:Bounds x="620" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ParallelGateway_1e4wi9w_di" bpmnElement="ParallelGateway_1e4wi9w">
+        <dc:Bounds x="485" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_146jqik_di" bpmnElement="ServiceTask_146jqik">
+        <dc:Bounds x="620" y="333" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_12xjksn_di" bpmnElement="EndEvent_12xjksn">
+        <dc:Bounds x="942" y="212" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="InclusiveGateway_1sog749_di" bpmnElement="InclusiveGateway_1sog749">
+        <dc:Bounds x="815" y="205" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ServiceTask_167mwc9_di" bpmnElement="ServiceTask_167mwc9">
+        <dc:Bounds x="290" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0l7t4up_di" bpmnElement="TextAnnotation_0l7t4up">
+        <dc:Bounds x="265" y="53" width="150" height="68" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="SequenceFlow_0wym2k9_di" bpmnElement="SequenceFlow_0wym2k9">
+        <di:waypoint x="218" y="230" />
+        <di:waypoint x="290" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1g89h5s_di" bpmnElement="SequenceFlow_1g89h5s">
+        <di:waypoint x="390" y="230" />
+        <di:waypoint x="485" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="DataOutputAssociation_0zmo7em_di" bpmnElement="DataOutputAssociation_0zmo7em">
+        <di:waypoint x="340" y="270" />
+        <di:waypoint x="340" y="348" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1kehh3d_di" bpmnElement="SequenceFlow_1kehh3d">
+        <di:waypoint x="535" y="230" />
+        <di:waypoint x="620" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_0fjjsyu_di" bpmnElement="SequenceFlow_0fjjsyu">
+        <di:waypoint x="720" y="230" />
+        <di:waypoint x="815" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1xvb2uz_di" bpmnElement="SequenceFlow_1xvb2uz">
+        <di:waypoint x="510" y="255" />
+        <di:waypoint x="510" y="373" />
+        <di:waypoint x="620" y="373" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_1x26pns_di" bpmnElement="SequenceFlow_1x26pns">
+        <di:waypoint x="720" y="373" />
+        <di:waypoint x="840" y="373" />
+        <di:waypoint x="840" y="255" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="SequenceFlow_192sft4_di" bpmnElement="SequenceFlow_192sft4">
+        <di:waypoint x="865" y="230" />
+        <di:waypoint x="942" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1sloh1q_di" bpmnElement="Association_1sloh1q">
+        <di:waypoint x="340" y="190" />
+        <di:waypoint x="340" y="121" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
