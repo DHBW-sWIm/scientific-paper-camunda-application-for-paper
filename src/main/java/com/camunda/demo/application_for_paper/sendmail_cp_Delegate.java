@@ -5,16 +5,13 @@ import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.spin.json.SpinJsonNode;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.SimpleEmail;
-
 import java.util.Collection;
 import java.util.Iterator;
 //import java.util.logging.ConsoleHandler;
 //import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import static org.camunda.spin.Spin.JSON;
-
 import java.sql.*;
 
 public class sendmail_cp_Delegate implements JavaDelegate {
