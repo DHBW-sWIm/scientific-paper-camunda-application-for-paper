@@ -37,6 +37,11 @@
   </dependencyManagement>
 
   <dependencies>
+  	<dependency>
+        <groupId>com.fasterxml.jackson.core</groupId>
+        <artifactId>jackson-databind</artifactId>
+        <version>2.9.8</version>
+    </dependency>
     <dependency>
       <!-- process engine, needs to be 'provided' because it's already a shared library in the container -->
       <groupId>org.camunda.bpm</groupId>
