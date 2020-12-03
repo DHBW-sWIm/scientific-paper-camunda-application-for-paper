@@ -1,0 +1,8 @@
+{ 
+    "document": {"documentid": "null", "documentlink": "null"}, 
+    "signees": { "1":[{"name": " ", "surname": "Guest user", "email": "root@localhost"}],"2": [{"name":"null", "surname": "null", "email": "null"}]}, 
+    "callback": {"link": "https://localhost:8080/camunda/engine-rest/message", "body": "{\"messageName\": \"signatureComplete\",\"businessKey\": \"f66a9324-2c4e-45a8-88b4-f947a8e6a9ad\"}"}
+    
+}
+
+
