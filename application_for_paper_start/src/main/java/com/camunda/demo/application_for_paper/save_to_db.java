@@ -19,7 +19,7 @@ public class save_to_db implements JavaDelegate {
 	private Connection conn;
 
 	public save_to_db() {
-		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.INFO);
 	}
 
 	@Override
@@ -28,14 +28,14 @@ public class save_to_db implements JavaDelegate {
 		Map<String, String> application_information = (Map<String, String>) execution.getVariable("application_info");
 		String query = "";
 		
-		logger.info(db_host);
-		logger.info(db_user);
-		logger.info(db_pwd);
+		logger.fine(db_host);
+		logger.fine(db_user);
+		logger.fine(db_pwd);
 		
 		Connection conn = getConnection();
 		
 	    
-	    logger.info("Preparing data");
+	    logger.fine("Preparing data");
 	    
 	    if (application_information.containsKey("supid")) {
 	    	query = " insert into mdl_spam_studenthassupervisor (studentid, supervisorid, ch_name, ch_surname, ch_email)"
@@ -45,13 +45,13 @@ public class save_to_db implements JavaDelegate {
 	    	query = " insert into mdl_spam_studenthassupervisor (studentid, ch_name, ch_surname, ch_email)"
 			        + " values (?, ?, ?, ?)";
 	    }
-	    logger.info(query);
+	    logger.fine(query);
 	    if(conn==null) {
 	    	logger.warning("DB connection not established");
 	    }
 	    PreparedStatement preparedStmt = conn.prepareStatement(query);
 	    
-	    logger.info("Inserting data");
+	    logger.fine("Inserting data");
 	    preparedStmt.setString (1, application_information.get("stid"));
 	    int pos = 2;
 	    if (application_information.containsKey("supid")) {
@@ -62,7 +62,7 @@ public class save_to_db implements JavaDelegate {
 	    preparedStmt.setString (pos+1, application_information.get("ch_surname"));
 	    preparedStmt.setString (pos+2, application_information.get("ch_mail"));
 	    
-	    logger.info("executing query");
+	    logger.fine("executing query");
 	    preparedStmt.execute();
 		conn.close();
 		logger.info("Data inserted to db");
@@ -73,7 +73,7 @@ public class save_to_db implements JavaDelegate {
 		if (this.conn != null) {
 			return this.conn;
 		}else {
-			logger.severe("Connecting to database.");
+			logger.fine("Connecting to database.");
 			Class.forName(db_driver);
 		
 			Connection conn=null;

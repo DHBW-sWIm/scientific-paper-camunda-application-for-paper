@@ -1,8 +1,24 @@
 { 
-    "document": {"documentid": "null", "documentlink": "null"}, 
-    "signees": { "1":[{"name": " ", "surname": "Guest user", "email": "root@localhost"}],"2": [{"name":"null", "surname": "null", "email": "null"}]}, 
-    "callback": {"link": "https://localhost:8080/camunda/engine-rest/message", "body": "{\"messageName\": \"signatureComplete\",\"businessKey\": \"f66a9324-2c4e-45a8-88b4-f947a8e6a9ad\"}"}
-    
+    "document": 
+    {
+        "documentid": "cdbc8bbb-a1d8-4752-80fe-cb3113bb5a5f", 
+        "documentlink": "cdbc8bbb-a1d8-4752-80fe-cb3113bb5a5f"
+    }, 
+    "signees": 
+    { 
+        "1":[
+            {"name": " ", "surname": "Guest user", "email": "root@localhost"}
+            ],
+        "2": [
+            {"name":"null", "surname": "null", "email": "null"}
+            ],
+        "3": [
+            {"name": " ", "surname": "Guest user", "email": "root@localhost"}
+            ]
+    }, 
+    "callback": 
+    {
+        "link": "http://localhost:8080/engine-rest/message", 
+        "body": "{\"messageName\": \"signatureComplete\",\"businessKey\": \"cdbc8bbb-a1d8-4752-80fe-cb3113bb5a5f\", \"processVariables\" : {\"status\" : {\"value\" : completionValue, \"type\": \"Boolean\"}}}"
+    }
 }
-
-

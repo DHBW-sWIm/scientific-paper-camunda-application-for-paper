@@ -18,15 +18,15 @@ public class SendMails implements JavaDelegate {
 	private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	public SendMails() {
-		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.INFO);
 	}
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		int currentstep = (int) execution.getVariable("currentStep");
-		logger.info("sending mails for step"+ String.valueOf(currentstep));
+		logger.fine("sending mails for step"+ String.valueOf(currentstep));
 		
-		logger.info("Finding current tasks");
+		logger.fine("Finding current tasks");
 		JsonObject payload = (JsonObject) new JsonParser().parse((String)execution.getVariable("payload"));
 		JsonObject signees = payload.get("signees").getAsJsonObject();
 		SignatureStep[] signatures = parseSignees(signees);
@@ -42,14 +42,13 @@ public class SendMails implements JavaDelegate {
 		if (it.hasNext()) {
 			tmp = it.next();
 		}else {
-			logger.info("allsigned");
+			logger.info("All documents were already signed");
 			return;
 		}
 		tmp.execute();
 		
-		logger.info(String.valueOf(tmp.getStep()));
-		
 		execution.setVariable("currentStep", tmp.getStep());
+		logger.info("Completed sending mails for step: " + String.valueOf(tmp.getStep()));
 	}
 	
 	private SignatureStep[] parseSignees(JsonObject obj) {

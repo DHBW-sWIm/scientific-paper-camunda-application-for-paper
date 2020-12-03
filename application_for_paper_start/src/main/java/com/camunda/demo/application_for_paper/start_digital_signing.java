@@ -28,25 +28,25 @@ public class start_digital_signing implements JavaDelegate {
 	private Connection conn;
 
 	public start_digital_signing() {
-		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.INFO);
 	}
 
 	@SuppressWarnings("unchecked")
 	public void execute(DelegateExecution execution) throws Exception {
 		
-		logger.info("Preparing for digital signature");
+		logger.fine("Preparing for digital signature");
 		HashMap<String, String> application_information = (HashMap<String, String>) execution.getVariable("application_info");
 		
 		String camundaHost = "localhost:8080";//System.getenv("camunda_host");
 		
 		String callbackAfterSignature = "http://"+camundaHost+"/engine-rest/message";
-		String callbackBody = String.format("\"{\"\"messageName\"\": \"\"signatureComplete\"\",\"\"businessKey\"\": \"\"%s\"\"}\"", execution.getBusinessKey());
+		String callbackBody = String.format("\"{\"\"messageName\"\": \"\"signatureComplete\"\",\"\"businessKey\"\": \"\"%s\"\", \"\"processVariables\"\" : {\"\"status\"\" : {\"\"value\"\" : completionValue, \"\"type\"\": \"\"Boolean\"\"}}}\"", execution.getBusinessKey());
 		
 		
 		Connection dbConn = getConnection();
 	    
-		logger.info("retrieving student info");
-		logger.info(application_information.get("stid"));
+		logger.fine("retrieving student info");
+		logger.fine(application_information.get("stid"));
 		ResultSet resultStudent = getUserInfo(application_information.get("stid"), dbConn);
 		
 		
@@ -54,9 +54,11 @@ public class start_digital_signing implements JavaDelegate {
 		String signatureJSON = "";
 		
 		//If scientific supervisor is defined, he needs to sign last
-		if (application_information.containsKey("supervisorID")) {
-			logger.info("found supervisor");
-			ResultSet resultSupervisor = getUserInfo(application_information.get("supervisorID"), dbConn);
+		if (application_information.containsKey("supid")) {
+			logger.fine("found supervisor");
+			logger.finer(application_information.get("supid"));
+			logger.finer(application_information.get("chName"));
+			ResultSet resultSupervisor = getUserInfo(application_information.get("supid"), dbConn);
 			resultSupervisor.first();
 			
 			signatureJSON = makeJSONWithSup(
@@ -65,9 +67,9 @@ public class start_digital_signing implements JavaDelegate {
 					resultStudent.getString(2), 
 					resultStudent.getString(1), 
 					resultStudent.getString(3), 
-					application_information.get("chName"), 
-					application_information.get("chSurname"), 
-					application_information.get("chMail"),  
+					application_information.get("ch_name"), 
+					application_information.get("ch_surname"), 
+					application_information.get("ch_mail"),  
 					resultSupervisor.getString(2), 
 					resultSupervisor.getString(1), 
 					resultSupervisor.getString(3), 
@@ -75,7 +77,7 @@ public class start_digital_signing implements JavaDelegate {
 					callbackBody);
 			
 	    }else {
-	    	logger.info("found no supervisor");
+	    	logger.fine("found no supervisor");
 	    	signatureJSON = makeJSONNoSup(
 					execution.getBusinessKey(),
 	    			application_information.get("doclink"), 
@@ -99,17 +101,17 @@ public class start_digital_signing implements JavaDelegate {
 		
 		signatureJSON = signatureJSON.replace("\"", "\\\"");
 		String payload = String.format("{\"businessKey\": \"%s\", \"variables\": {\"signature_information\": {\"value\": \"{%s}\", \"type\":\"String\"}}}", execution.getBusinessKey(), signatureJSON);
-		logger.info(payload);
+		logger.fine(payload);
 		
 		//prepare request to ds on camunda
-		logger.info("preparing connection");
+		logger.fine("preparing connection");
 		URL url = null;
 		try {
 			url = new URL(String.format("http://%s/engine-rest/process-definition/key/digital_signature/start", camundaHost));
 		} catch (MalformedURLException e3) {
 			e3.printStackTrace();
 		}
-		logger.info("url inserted");
+		logger.fine("url inserted");
 		HttpURLConnection restConn = (HttpURLConnection) url.openConnection();
 		try {
 			restConn.setRequestMethod("POST");
@@ -118,7 +120,7 @@ public class start_digital_signing implements JavaDelegate {
 		} catch (ProtocolException e3) {
 			e3.printStackTrace();
 		}
-		logger.info("getting output stream");
+		logger.fine("getting output stream");
 		OutputStream os=null;
 		try {
 		os = restConn.getOutputStream();
@@ -127,22 +129,21 @@ public class start_digital_signing implements JavaDelegate {
 			e.printStackTrace();
 			
 		}
-		logger.info("got output stream");
 		OutputStreamWriter osw = new OutputStreamWriter(os);
   
-		logger.info("writing json");
+		logger.fine("writing json");
 		osw.write(payload);
 		osw.flush();
 		osw.close();
 		os.close();
-		logger.info("executing connection");
+		logger.fine("executing connection");
 		restConn.connect();
 		if (restConn.getResponseCode()>202) {
 			logger.info(url.toString());
 			logger.info(restConn.getResponseMessage());
 			throw new RuntimeException("Starting of digital signature failed with " + String.valueOf(restConn.getResponseCode()));
 		}else {
-			System.out.println("Process digital signature started");
+			logger.info("Process digital signature started");
 		}
 
 
@@ -152,7 +153,7 @@ public class start_digital_signing implements JavaDelegate {
 		if (this.conn != null) {
 			return this.conn;
 		}else {
-			logger.severe("Connecting to database.");
+			logger.fine("Connecting to database.");
 			Class.forName(db_driver);
 		
 			Connection conn=null;
@@ -233,11 +234,11 @@ public class start_digital_signing implements JavaDelegate {
 		
 		String JSON = makeJSONHead(documentID, documentLink, stName, stSurname, stMail, chName, chSurname, chMail);
 		
-		JSON += String.format("\"3\": [{\"name\": \"%s\", \"surname\": \"%s\", \"email\": \"%s\"}]", supName, supSurname, supMail);
+		JSON += String.format(",\"3\": [{\"name\": \"%s\", \"surname\": \"%s\", \"email\": \"%s\"}]", supName, supSurname, supMail);
 		
 		JSON += "}, ";
 		JSON += String.format("\"callback\": {\"link\": \"%s\", \"body\": %s", callbackLink, callbackBody);
-		JSON += "}}";
+		JSON += "}";
 		
 		return JSON;
 	
@@ -268,7 +269,7 @@ public class start_digital_signing implements JavaDelegate {
 		//Read student information from db
 		assert conn!=null;
 	    String query = "SELECT firstname, lastname, email FROM mdl_user WHERE id=?";
-	    logger.info(conn.toString());
+	    logger.finer(conn.toString());
 	    PreparedStatement preparedStmt = conn.prepareStatement(query);
 		preparedStmt.setString (1, userID);
 			

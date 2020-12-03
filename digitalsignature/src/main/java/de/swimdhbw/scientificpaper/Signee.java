@@ -1,5 +1,6 @@
 package de.swimdhbw.scientificpaper;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Signee {
@@ -12,6 +13,14 @@ public class Signee {
 		this.name=name;
 		this.surname=surname;
 		this.mail=mail;
+		logger.setLevel(Level.INFO);
+	}
+	
+	public Signee(String name, String surname, String mail, Level loggerLevel) {
+		this.name=name;
+		this.surname=surname;
+		this.mail=mail;
+		logger.setLevel(loggerLevel);
 	}
 
 	public String getName() {
@@ -28,7 +37,7 @@ public class Signee {
 	}
 	
 	public void sendMail() {
-		logger.info("Sending mail for " + this.surname + " " + this.name);
+		logger.warning("No mail sent for " + this.surname + " " + this.name);
 	}
 
 }

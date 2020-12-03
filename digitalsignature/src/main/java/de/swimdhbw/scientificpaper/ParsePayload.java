@@ -2,6 +2,7 @@ package de.swimdhbw.scientificpaper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.camunda.bpm.engine.delegate.DelegateExecution;
@@ -13,9 +14,10 @@ import camundajar.impl.com.google.gson.JsonObject;
 import camundajar.impl.com.google.gson.JsonParser;
 
 public class ParsePayload implements JavaDelegate {
-	private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 
 	public ParsePayload() {
+		logger.setLevel(Level.INFO);
 	}
 
 	@Override
@@ -25,28 +27,23 @@ public class ParsePayload implements JavaDelegate {
 		String jsonPayload = (String) execution.getVariable("signature_information");
 		jsonPayload = jsonPayload.replace("\"\"", "\\\"");
 		
-		logger.info(jsonPayload);
+		logger.fine(jsonPayload);
 		
 		JsonObject obj = (JsonObject) new JsonParser().parse(jsonPayload);
 		
-		
-		//Document doc = parseDocument(obj.get("document").getAsJsonObject());
-		logger.info("Document instance created");
-		
 		SignatureStep[] signatures = parseSignees(obj.get("signees").getAsJsonObject());
-		logger.info("Signatures instance created");
+		logger.fine("Signatures instance created");
 		
-		logger.info("Using businessKey: "+execution.getBusinessKey());
-		Payload payload = new Payload(execution.getBusinessKey(), null, signatures, null);
 		
-		logger.info("setting setps");
-		execution.setVariable("currentStep", payload.getSignees()[0].getStep());
-		execution.setVariable("lastStep", payload.getSignees()[payload.getSignees().length-1].getStep());
+		logger.fine("setting steps");
+		execution.setVariable("currentStep", -1);
+		execution.setVariable("lastStep", signatures[signatures.length-1].getStep());
 		
-		logger.info("setting payload");
-
+		
+		logger.fine("setting payload");
 		execution.setVariable("payload", jsonPayload);
-		//execution.setVariable("payload", payload);
+		
+		logger.info("Parsing completed");
 		
 	}	
 	

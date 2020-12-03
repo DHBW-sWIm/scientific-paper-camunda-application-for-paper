@@ -6,6 +6,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.ProtocolException;
 import java.net.URL;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Callback {
@@ -16,6 +17,13 @@ public class Callback {
 	public Callback(String link, String body) {
 		this.link=link;
 		this.body=body;
+		logger.setLevel(Level.FINE);
+	}
+	
+	public Callback(String link, String body, Level loggerLevel) {
+		this.link=link;
+		this.body=body;
+		logger.setLevel(loggerLevel);
 	}
 
 	public String getLink() {
@@ -24,6 +32,11 @@ public class Callback {
 
 	public String getBody() {
 		return body;
+	}
+	
+	public void setBody(String body) {
+		logger.finer("New body: "+body);
+		this.body=body;
 	}
 	
 	public void execute() throws IOException {
@@ -46,12 +59,10 @@ public class Callback {
 		osw.close();
 		os.close();
 		restConn.connect();
-		if (restConn.getResponseCode()!=204) {
-			logger.warning(this.link);
-			logger.warning(body);
+		if (restConn.getResponseCode()>205) {
+			logger.severe(this.link);
+			logger.severe(body);
 			throw new RuntimeException("Ending of digital signature request failed with" + String.valueOf(restConn.getResponseCode()));
-		}else {
-			System.out.println("Process digital signature ended");
 		}
 		
 	}

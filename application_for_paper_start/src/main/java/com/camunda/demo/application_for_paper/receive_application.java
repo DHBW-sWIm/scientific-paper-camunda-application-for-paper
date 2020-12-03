@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 public class receive_application implements JavaDelegate {
 	private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 	public receive_application() {
-		logger.setLevel(Level.ALL);
+		logger.setLevel(Level.INFO);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -27,7 +27,7 @@ public class receive_application implements JavaDelegate {
 		logger.info(String.format("Process started. Assigned UUID: %s", processID.toString()));
 		execution.setProcessBusinessKey(processID);
 		
-		logger.info("Unpacking payload");
+		logger.fine("Unpacking payload");
 		
 		String datastring = (String) execution.getVariable("application_information"); // receiving datastring from API Call and parsing data
 		
@@ -36,7 +36,7 @@ public class receive_application implements JavaDelegate {
 		application_data.put("stid", (String) execution.getVariable("stid"));
 		
 		if (execution.hasVariable("supid")) {
-			logger.info("Scientific Supervisor found");
+			logger.fine("Scientific Supervisor found");
 			application_data.put("supid", (String) execution.getVariable("supid"));
 		}
 		
