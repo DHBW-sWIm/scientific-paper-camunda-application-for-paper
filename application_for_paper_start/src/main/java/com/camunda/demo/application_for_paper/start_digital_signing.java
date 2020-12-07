@@ -19,13 +19,7 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 
 public class start_digital_signing implements JavaDelegate {
-	//scientific-paper-swim-process-moodle-mariadb:3306
-	private static final String db_host = String.format("jdbc:mysql://%s/bitnami_moodle", System.getenv("PROCESS_DB_HOST"));
-	private static final String db_user = System.getenv("PROCESS_DB_USER");
-	private static final String db_pwd = System.getenv("PROCESS_DB_PWD");
-	private static final String db_driver = "org.mariadb.jdbc.Driver";
 	private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	private Connection conn;
 
 	public start_digital_signing() {
 		logger.setLevel(Level.INFO);
@@ -43,11 +37,11 @@ public class start_digital_signing implements JavaDelegate {
 		String callbackBody = String.format("\"{\"\"messageName\"\": \"\"signatureComplete\"\",\"\"businessKey\"\": \"\"%s\"\", \"\"processVariables\"\" : {\"\"status\"\" : {\"\"value\"\" : completionValue, \"\"type\"\": \"\"Boolean\"\"}}}\"", execution.getBusinessKey());
 		
 		
-		Connection dbConn = getConnection();
+		DataBase db = new DataBase();
 	    
 		logger.fine("retrieving student info");
 		logger.fine(application_information.get("stid"));
-		ResultSet resultStudent = getUserInfo(application_information.get("stid"), dbConn);
+		ResultSet resultStudent = getUserInfo(application_information.get("stid"), db);
 		
 		
 		//Generate JSON to trigger digital signature
@@ -58,7 +52,7 @@ public class start_digital_signing implements JavaDelegate {
 			logger.fine("found supervisor");
 			logger.finer(application_information.get("supid"));
 			logger.finer(application_information.get("chName"));
-			ResultSet resultSupervisor = getUserInfo(application_information.get("supid"), dbConn);
+			ResultSet resultSupervisor = getUserInfo(application_information.get("supid"), db);
 			resultSupervisor.first();
 			
 			signatureJSON = makeJSONWithSup(
@@ -92,12 +86,7 @@ public class start_digital_signing implements JavaDelegate {
 	    			);
 	    }
 		
-		dbConn.close();
-		
-		
-		if (System.getenv("ENV_TYPE")=="development") {
-			System.out.println(signatureJSON);
-		}
+		db.close();
 		
 		signatureJSON = signatureJSON.replace("\"", "\\\"");
 		String payload = String.format("{\"businessKey\": \"%s\", \"variables\": {\"signature_information\": {\"value\": \"{%s}\", \"type\":\"String\"}}}", execution.getBusinessKey(), signatureJSON);
@@ -147,28 +136,6 @@ public class start_digital_signing implements JavaDelegate {
 		}
 
 
-	}
-	
-	private Connection getConnection() throws ClassNotFoundException {
-		if (this.conn != null) {
-			return this.conn;
-		}else {
-			logger.fine("Connecting to database.");
-			Class.forName(db_driver);
-		
-			Connection conn=null;
-			
-		    try{
-		    	conn = DriverManager.getConnection(db_host, db_user, db_pwd);
-		    	this.conn=conn;
-		    	return conn;
-		    }catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-		}
-		return conn;
-		
 	}
 	
 	/**
@@ -265,12 +232,12 @@ public class start_digital_signing implements JavaDelegate {
 		return signatureJSON;
 	}
 	
-	public static ResultSet getUserInfo(String userID, Connection conn) throws SQLException {
+	public static ResultSet getUserInfo(String userID, DataBase db) throws SQLException {
 		//Read student information from db
-		assert conn!=null;
+		assert db!=null;
 	    String query = "SELECT firstname, lastname, email FROM mdl_user WHERE id=?";
-	    logger.finer(conn.toString());
-	    PreparedStatement preparedStmt = conn.prepareStatement(query);
+	    logger.finer(db.toString());
+	    PreparedStatement preparedStmt = db.prepareQuery(query);
 		preparedStmt.setString (1, userID);
 			
 	    ResultSet result = null;
