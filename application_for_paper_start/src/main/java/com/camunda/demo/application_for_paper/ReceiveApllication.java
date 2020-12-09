@@ -2,24 +2,20 @@ package com.camunda.demo.application_for_paper;
 
 
 
-import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.bpm.engine.delegate.JavaDelegate;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class receive_application implements JavaDelegate {
+import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.camunda.bpm.engine.delegate.JavaDelegate;
+
+public class ReceiveApllication implements JavaDelegate {
 	private static Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-	public receive_application() {
+	public ReceiveApllication() {
 		logger.setLevel(Level.INFO);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
 		String processID = UUID.randomUUID().toString();
@@ -29,11 +25,10 @@ public class receive_application implements JavaDelegate {
 		
 		logger.fine("Unpacking payload");
 		
-		String datastring = (String) execution.getVariable("application_information"); // receiving datastring from API Call and parsing data
-		
 		HashMap<String, String> application_data = new HashMap<String, String>();
 		
 		application_data.put("stid", (String) execution.getVariable("stid"));
+		application_data.put("kursInfo", (String) execution.getVariable("stcourse"));
 		
 		if (execution.hasVariable("supid")) {
 			logger.fine("Scientific Supervisor found");
@@ -47,9 +42,12 @@ public class receive_application implements JavaDelegate {
 		application_data.put("unternehmenAbteilung", (String) execution.getVariable("department"));
 		application_data.put("unternehmensbetreuerNachname", (String) execution.getVariable("ch_name"));
 		application_data.put("unternehmensbetreuerVorname", (String) execution.getVariable("ch_surname"));
+		application_data.put("unternehmensvertreterNachname", (String) execution.getVariable("ch_name"));
+		application_data.put("unternehmensvertreterVorname", (String) execution.getVariable("ch_surname"));
 		application_data.put("unternehmensbetreuerEmail", (String) execution.getVariable("ch_mail"));
 		application_data.put("unternehmensbetreuerTelefon", (String) execution.getVariable("ch_phone"));
 		application_data.put("unternehmensbetreuerFunktion", (String) execution.getVariable("ch_function"));
+		application_data.put("unternehmensvertreterFunktion", (String) execution.getVariable("ch_function"));
 		
 		application_data.put("BachelorarbeitInhalt", (String) execution.getVariable("content"));
 		application_data.put("ProjektarbeitInhalt", (String) execution.getVariable("content"));

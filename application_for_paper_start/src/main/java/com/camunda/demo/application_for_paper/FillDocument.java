@@ -29,8 +29,7 @@ public class FillDocument implements JavaDelegate {
 		logger.setLevel(Level.FINEST);
 	}
 
-	/*
-	 * studentNachname
+	/*  studentNachname
 		studentVorname
 		studentKurs
 		studentMatrikelnummer
@@ -90,10 +89,11 @@ public class FillDocument implements JavaDelegate {
 	
 	
 	//type should be either PA I, PA II or BA
-	public File gettemplateFileForType(String type) throws URISyntaxException {
+	public File gettemplateFileForType(String type) throws URISyntaxException, IllegalAccessException {
 		
 		File template = null;
 		URL ressourcepath = null;
+		logger.fine(type);
 		if (type.equals("PA I")) {
 			ressourcepath = getClass().getClassLoader().getResource("anmeldung_pa_1.pdf");
 		}else if (type.equals("PA II")) {
@@ -102,6 +102,7 @@ public class FillDocument implements JavaDelegate {
 			ressourcepath = getClass().getClassLoader().getResource("anmeldung_ba.pdf");
 		}else {
 			logger.warning("The specified type could not be found");
+			throw new IllegalAccessException(String.format("The type %s is not permitted", type));
 		}
 		template = new File(ressourcepath.toURI());
 		

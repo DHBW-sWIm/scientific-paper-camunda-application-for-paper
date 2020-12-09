@@ -4,7 +4,7 @@
     <bpmn:startEvent id="StartEvent_1" name="Application-data is submitted">
       <bpmn:outgoing>Flow_041mero</bpmn:outgoing>
     </bpmn:startEvent>
-    <bpmn:serviceTask id="Activity_0kh83ej" name="Receive data via API and parse" camunda:asyncAfter="true" camunda:exclusive="false" camunda:class="com.camunda.demo.application_for_paper.receive_application">
+    <bpmn:serviceTask id="Activity_0kh83ej" name="Receive data via API and parse" camunda:asyncAfter="true" camunda:exclusive="false" camunda:class="com.camunda.demo.application_for_paper.ReceiveApllication">
       <bpmn:incoming>Flow_041mero</bpmn:incoming>
       <bpmn:outgoing>Flow_0p9wbf1</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -100,9 +100,10 @@ lock_reason</bpmn:text>
   <bpmn:message id="Message_1obcs05" name="Review Completed" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="application_for_thesis">
-      <bpmndi:BPMNShape id="TextAnnotation_0t5gl6m_di" bpmnElement="TextAnnotation_0t5gl6m">
-        <dc:Bounds x="280" y="80" width="100" height="269" />
-      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1tjs16s_di" bpmnElement="Flow_1tjs16s">
+        <di:waypoint x="440" y="420" />
+        <di:waypoint x="470" y="420" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1eh9zf0_di" bpmnElement="Flow_1eh9zf0">
         <di:waypoint x="1100" y="420" />
         <di:waypoint x="1410" y="420" />
@@ -139,16 +140,6 @@ lock_reason</bpmn:text>
         <di:waypoint x="188" y="420" />
         <di:waypoint x="220" y="420" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1tjs16s_di" bpmnElement="Flow_1tjs16s">
-        <di:waypoint x="440" y="420" />
-        <di:waypoint x="470" y="420" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNShape id="Activity_02oud1h_di" bpmnElement="Activity_1fq7oak">
-        <dc:Bounds x="1410" y="380" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="DataStoreReference_0b1j1x9_di" bpmnElement="DataStoreReference_0b1j1x9">
-        <dc:Bounds x="545" y="525" width="50" height="50" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="152" y="402" width="36" height="36" />
         <bpmndi:BPMNLabel>
@@ -158,14 +149,8 @@ lock_reason</bpmn:text>
       <bpmndi:BPMNShape id="Activity_0kh83ej_di" bpmnElement="Activity_0kh83ej">
         <dc:Bounds x="220" y="380" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0ot9p2b_di" bpmnElement="Activity_175j3vn">
-        <dc:Bounds x="340" y="380" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0tp0wnn_di" bpmnElement="Activity_1dpgyxa">
         <dc:Bounds x="470" y="380" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_06h3ow5_di" bpmnElement="Activity_1a0096t">
-        <dc:Bounds x="600" y="380" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0z96xm6_di" bpmnElement="Activity_037bqkg">
         <dc:Bounds x="740" y="380" width="100" height="80" />
@@ -173,22 +158,37 @@ lock_reason</bpmn:text>
       <bpmndi:BPMNShape id="Activity_07zm5ii_di" bpmnElement="Activity_1698vjl">
         <dc:Bounds x="870" y="380" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1j3luok_di" bpmnElement="Activity_1uzg1b3">
-        <dc:Bounds x="1000" y="380" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0susie4_di" bpmnElement="Event_1n38q9u">
         <dc:Bounds x="1682" y="402" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataStoreReference_0b1j1x9_di" bpmnElement="DataStoreReference_0b1j1x9">
+        <dc:Bounds x="545" y="525" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06h3ow5_di" bpmnElement="Activity_1a0096t">
+        <dc:Bounds x="600" y="380" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_1gmwfa6_di" bpmnElement="Activity_1csvi37">
         <dc:Bounds x="1550" y="380" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge id="Association_1tn5pop_di" bpmnElement="Association_1tn5pop">
-        <di:waypoint x="278" y="380" />
-        <di:waypoint x="283" y="349" />
-      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_02oud1h_di" bpmnElement="Activity_1fq7oak">
+        <dc:Bounds x="1410" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1j3luok_di" bpmnElement="Activity_1uzg1b3">
+        <dc:Bounds x="1000" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ot9p2b_di" bpmnElement="Activity_175j3vn">
+        <dc:Bounds x="340" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_0t5gl6m_di" bpmnElement="TextAnnotation_0t5gl6m">
+        <dc:Bounds x="280" y="80" width="100" height="269" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="DataOutputAssociation_09rk4ux_di" bpmnElement="DataOutputAssociation_09rk4ux">
         <di:waypoint x="537" y="460" />
         <di:waypoint x="565" y="525" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1tn5pop_di" bpmnElement="Association_1tn5pop">
+        <di:waypoint x="278" y="380" />
+        <di:waypoint x="283" y="349" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
