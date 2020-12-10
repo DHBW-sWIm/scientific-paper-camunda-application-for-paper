@@ -1,1 +1,4 @@
 /target/
+.setting
+.idea
+digitalsignature.iml
