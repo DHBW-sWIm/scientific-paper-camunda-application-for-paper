@@ -1,0 +1,1580 @@
+{
+	"info": {
+		"_postman_id": "3006fe0a-b652-49fb-8220-c1ffceaeae41",
+		"name": "Camunda",
+		"description": "This collection contain all the rest-api enpoints related to Camunda",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "AUTHORIZATION SERVICES ENDPOINTS",
+			"item": [
+				{
+					"name": "GET ALL AUTHORIZATION LIST",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{camunda}}/engine-rest/authorization",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"authorization"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET AUTHORIZATION LIST FOR PARTICULAR USER BY USER_ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{camunda}}/engine-rest/authorization?userIdIn=demo",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"authorization"
+							],
+							"query": [
+								{
+									"key": "userIdIn",
+									"value": "demo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL AUTHORIZATIONS COUNT",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{camunda}}/engine-rest/authorization/count",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"authorization",
+								"count"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET SINGLE AUTHORIZATION",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{camunda}}/engine-rest/authorization/dd4cea5b-1eff-11e9-a4e3-0242ac110002",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"authorization",
+								"dd4cea5b-1eff-11e9-a4e3-0242ac110002"
+							]
+						},
+						"description": "localhost:8080/engine-rest/authorization/{authorizationID}"
+					},
+					"response": []
+				},
+				{
+					"name": "PERFORM AN AUTHORIZATION  CHECK",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{camunda}}/engine-rest/authorization/check?permissionName=READ,permissionValue=2,resourceName=USER,resourceType=1,resourceId=demo",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"authorization",
+								"check"
+							],
+							"query": [
+								{
+									"key": "permissionName",
+									"value": "READ,permissionValue=2,resourceName=USER,resourceType=1,resourceId=demo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL AUTHORIZATION RESOURCE OPTIONS",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{camunda}}/engine-rest/authorization",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"authorization"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET AUTHORIZATION RESOURCE OPTIONS WITH USERID",
+					"request": {
+						"method": "OPTIONS",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{camunda}}/engine-rest/authorization/dd4cea5b-1eff-11e9-a4e3-0242ac110002",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"authorization",
+								"dd4cea5b-1eff-11e9-a4e3-0242ac110002"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE A NEW AUTHORIZATION",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"type\" : 2,\n \"permissions\": [\"CREATE\", \"READ\"],\n \"userId\": \"sathish\",\n \"groupId\": null,\n \"resourceType\": 1,\n \"resourceId\": \"*\"}"
+						},
+						"url": {
+							"raw": "{{camunda}}/engine-rest/authorization/create",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"authorization",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE A NEW AUTHORIZATION",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"permissions\": [\"READ\"],\n \"userId\": \"sathish one\",\n \"groupId\": null,\n \"resourceType\": 1,\n \"resourceId\": \"*\"}"
+						},
+						"url": {
+							"raw": "localhost:8080/engine-rest/authorization/5f2fbd0e-2074-11e9-8812-0242ac110002",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"authorization",
+								"5f2fbd0e-2074-11e9-8812-0242ac110002"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE  AUTHORIZATION",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"permissions\": [\"READ\"],\n \"userId\": \"sathish one\",\n \"groupId\": null,\n \"resourceType\": 1,\n \"resourceId\": \"*\"}"
+						},
+						"url": {
+							"raw": "localhost:8080/engine-rest/authorization/5f2fbd0e-2074-11e9-8812-0242ac110002",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"authorization",
+								"5f2fbd0e-2074-11e9-8812-0242ac110002"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "TASK",
+			"item": [
+				{
+					"name": "GET TASK",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhOGZsb3ciLCJleHAiOjE1NTQyNzY4NjEsInVzZXJuYW1lIjoiZGVtbyJ9.DGoiyAjgZK5ok6kYqvuvnRD8d3aUoijVQcuLESANJCg"
+							}
+						],
+						"url": {
+							"raw": "https://esaf.autonom8.com/engine-rest/task?assignee=demo&assigned=true",
+							"protocol": "https",
+							"host": [
+								"esaf",
+								"autonom8",
+								"com"
+							],
+							"path": [
+								"engine-rest",
+								"task"
+							],
+							"query": [
+								{
+									"key": "assignee",
+									"value": "demo"
+								},
+								{
+									"key": "assigned",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL TASK",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/task/",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"task",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TASK DEPLOYED FORM",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/task/f47f62aa-34fd-11e9-8283-0242eab21e5c",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"task",
+								"f47f62aa-34fd-11e9-8283-0242eab21e5c"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TASK FORM KEY",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/task/f47f62aa-34fd-11e9-8283-0242eab21e5c/form/",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"task",
+								"f47f62aa-34fd-11e9-8283-0242eab21e5c",
+								"form",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TASK GENERATED TASK FORM",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/task",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"task"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TASK HISTORY",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/task/",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"task",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD IDENTITY LINKS/ GROUP",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/group",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET IDENTITY LINKS/ GROUP",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"groupId\": \"sales\", \"type\": \"candidate\"}"
+						},
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/task/1e95f8ee-4625-11e9-acde-02421d8c7be8/identity-links",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"task",
+								"1e95f8ee-4625-11e9-acde-02421d8c7be8",
+								"identity-links"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UNCLAIM TASK BY USER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"groupId\": \"sales\", \"type\": \"candidate\"}"
+						},
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/task/1e95f8ee-4625-11e9-acde-02421d8c7be8/unclaim",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"task",
+								"1e95f8ee-4625-11e9-acde-02421d8c7be8",
+								"unclaim"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CLAIM TASK BY USER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\": \"asif\"}"
+						},
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/task/1e95f8ee-4625-11e9-acde-02421d8c7be8/claim",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"task",
+								"1e95f8ee-4625-11e9-acde-02421d8c7be8",
+								"claim"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TASK FORM VARIABLES",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\": \"asif\"}"
+						},
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/task/1e95f8ee-4625-11e9-acde-02421d8c7be8/claim",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"task",
+								"1e95f8ee-4625-11e9-acde-02421d8c7be8",
+								"claim"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST TASK SUBMIT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"userId\": \"asif\"}"
+						},
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/task/1e95f8ee-4625-11e9-acde-02421d8c7be8/claim",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"task",
+								"1e95f8ee-4625-11e9-acde-02421d8c7be8",
+								"claim"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TASK TOKENS USING FILTER",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhOGZsb3ciLCJleHAiOjE1NTQyODI2NzksInVzZXJuYW1lIjoiZGVtbyJ9.e-_G2GtVmqqrR5Hg_QF7m-nn1AbKTZBIdUIznYxS9Mw"
+							}
+						],
+						"url": {
+							"raw": "https://esaf.autonom8.com/engine-rest/filter?resourceType=Task",
+							"protocol": "https",
+							"host": [
+								"esaf",
+								"autonom8",
+								"com"
+							],
+							"path": [
+								"engine-rest",
+								"filter"
+							],
+							"query": [
+								{
+									"key": "resourceType",
+									"value": "Task"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TEST GET ALL TASK INFO",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJhOGZsb3ciLCJleHAiOjE1NTQyODI2NzksInVzZXJuYW1lIjoiZGVtbyJ9.e-_G2GtVmqqrR5Hg_QF7m-nn1AbKTZBIdUIznYxS9Mw"
+							}
+						],
+						"url": {
+							"raw": "https://esaf.autonom8.com/engine-rest/filter",
+							"protocol": "https",
+							"host": [
+								"esaf",
+								"autonom8",
+								"com"
+							],
+							"path": [
+								"engine-rest",
+								"filter"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "USER",
+			"item": [
+				{
+					"name": "GET ALL USERS",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{camunda}}/engine-rest/user",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL USERS COUNT",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{camunda}}/engine-rest/user/count",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"user",
+								"count"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET USER PROFILE",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/engine-rest/user/demo/profile",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"user",
+								"demo",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "AVAILABLE OPTIONS FOR USERS",
+					"request": {
+						"method": "OPTIONS",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"permissions\": [\"READ\"],\n \"userId\": \"sathish one\",\n \"groupId\": null,\n \"resourceType\": 1,\n \"resourceId\": \"*\"}"
+						},
+						"url": {
+							"raw": "localhost:8080/engine-rest/user/demo",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"user",
+								"demo"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ENDPOINT FOR CREATING NEW USER",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"profile\": \n  {\"id\": \"ravi\",\n  \"firstName\":\"ravi\",\n  \"lastName\":\"kumar\",\n  \"email\":\"ravi@gmail.com\"},\n\"credentials\": \n  {\"password\":\"a8\"}\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/engine-rest/user/create",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"user",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ENDPOINT FOR UPDATE  USER CREDENTIALS",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"password\":\"steve\", \"authenticatedUserPassword\": \"a8\"}\n"
+						},
+						"url": {
+							"raw": "localhost:8080/engine-rest/user/ravi/credentials",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"user",
+								"ravi",
+								"credentials"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE USER USING USERID",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"permissions\": [\"READ\"],\n \"userId\": \"sathish one\",\n \"groupId\": null,\n \"resourceType\": 1,\n \"resourceId\": \"*\"}"
+						},
+						"url": {
+							"raw": "localhost:8080/engine-rest/user/ravi",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"user",
+								"ravi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ENDPOINT FOR UPDATE  USER PROFILE",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"id\":\"steve\",\n  \"firstName\":\"ichanged\",\n  \"lastName\":\"ichanged\",\n  \"email\":\"i@autonom8.com\"}"
+						},
+						"url": {
+							"raw": "localhost:8080/engine-rest/user/steve/profile",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"user",
+								"steve",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "PROCESS DEFINITION",
+			"item": [
+				{
+					"name": "START PROCESS INSTANCE Thesis",
+					"protocolProfileBehavior": {
+						"strictSSL": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"variables\": {\n    \"stid\" : {\n        \"value\" : \"1\",\n        \"type\": \"String\"\n    },\n   \"supid\" : {\n        \"value\" : \"1\",\n        \"type\": \"String\"\n    },\n    \"ch_surname\" : {\n        \"value\" : \"test\",\n        \"type\": \"String\"\n    },\n    \"ch_name\" : {\n        \"value\" : \"user\",\n        \"type\": \"String\"\n    },\n    \"ch_mail\" : {\n        \"value\" : \"test@test.com\",\n        \"type\": \"String\"\n    }\n  }\n}"
+						},
+						"url": {
+							"raw": "http://{{camunda}}/engine-rest/process-definition/key/application_for_thesis/start/",
+							"protocol": "http",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"process-definition",
+								"key",
+								"application_for_thesis",
+								"start",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "START PROCESS INSTANCE",
+					"protocolProfileBehavior": {
+						"strictSSL": true
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"businessKey\": \"c1fc1f14-fc9a-45ed-9192-19d3720c42ed\", \n\"variables\": {\n    \"signature_information\": {\n        \"value\": \"{ \\\"document\\\": {\\\"documentid\\\": \\\"c1fc1f14-fc9a-45ed-9192-19d3720c42ed\\\", \\\"documentlink\\\": \\\"c1fc1f14-fc9a-45ed-9192-19d3720c42ed\\\"}, \\\"signees\\\": { \\\"1\\\":[{\\\"name\\\": \\\" \\\", \\\"surname\\\": \\\"Guest user\\\", \\\"email\\\": \\\"root@localhost\\\"}],\\\"2\\\": [{\\\"name\\\":\\\"null\\\", \\\"surname\\\": \\\"null\\\", \\\"email\\\": \\\"null\\\"}]}, \\\"callback\\\": {\\\"link\\\": \\\"http://localhost:8080/camunda/engine-rest/message\\\", \\\"body\\\": \\\"{\\\"\\\"messageName\\\"\\\": \\\"\\\"signatureComplete\\\"\\\",\\\"\\\"businessKey\\\"\\\": \\\"\\\"c1fc1f14-fc9a-45ed-9192-19d3720c42ed\\\"\\\"}\\\"}}\", \n        \"type\":\"String\"}\n    }\n}"
+						},
+						"url": {
+							"raw": "http://{{camunda}}/engine-rest/process-definition/key/digital_signature/start/",
+							"protocol": "http",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"process-definition",
+								"key",
+								"digital_signature",
+								"start",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET PROCESS DIAGRAM",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"variables\": {\n\t\t\"amount\": {\n\t\t\t\"value\":555,\n\t\t\t\"type\":\"long\"\n\t\t},\n\t\t\"item\": {\n\t\t\t\"value\": \"item-xyz\"\n\t\t}\n\t}\n}"
+						},
+						"url": {
+							"raw": "http://{{camunda}}/engine-rest/process-definition/key/invoice/startForm",
+							"protocol": "http",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"process-definition",
+								"key",
+								"invoice",
+								"startForm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL PROCESS DEFINITION",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://{{camunda}}/engine-rest/process-definition",
+							"protocol": "http",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"process-definition"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PROCESS-DEFINITION-XML",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://{{camunda}}/engine-rest/process-definition?latestVersion=true",
+							"protocol": "http",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"process-definition"
+							],
+							"query": [
+								{
+									"key": "latestVersion",
+									"value": "true"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET START FORM KEY",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.1.12:8080/engine-rest/process-definition/invoice:2:245b6108-1f00-11e9-b5fc-5ec9bd1f3569/xml",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"12"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"process-definition",
+								"invoice:2:245b6108-1f00-11e9-b5fc-5ec9bd1f3569",
+								"xml"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET START FORM VARIABLE",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.1.12:8080/engine-rest/process-definition/myprocess:8:fc2221f2-245b-11e9-b598-ca9b0828f2a1/startForm",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"1",
+								"12"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"process-definition",
+								"myprocess:8:fc2221f2-245b-11e9-b598-ca9b0828f2a1",
+								"startForm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL PROCESS INSTANCE",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "https://{{camunda}}/engine-rest/process-definition/",
+							"protocol": "https",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"process-definition",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "IDENTITY",
+			"item": [
+				{
+					"name": "GET A USERS GROUPS BY USER_ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "localhost:8080/engine-rest/identity/groups?userId=demo",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"identity",
+								"groups"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "demo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "VERIFY USER BY  USER_CREDENTIALS",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"demo\",\n  \"password\": \"demdo\"\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/engine-rest/identity/verify",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"identity",
+								"verify"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "GROUP",
+			"item": [
+				{
+					"name": "GET ALL GROUPS",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/group",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"group"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT USER IN SPECIFIC GROUP",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/group",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"group"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "PROCESS INSTANCE",
+			"item": [
+				{
+					"name": "GET ALL PROCESS INSTANCES",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/process-instance",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"process-instance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL VARIABLES",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/process-instance",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"process-instance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE PROCESS INSTANCE VARIABLE",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"disabled": true
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://192.168.0.100:8080/engine-rest/process-instance/a648065f-4640-11e9-acde-02421d8c7be8/variables",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"0",
+								"100"
+							],
+							"port": "8080",
+							"path": [
+								"engine-rest",
+								"process-instance",
+								"a648065f-4640-11e9-acde-02421d8c7be8",
+								"variables"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Message",
+			"item": [
+				{
+					"name": "Send Message",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"messageName\" : \"aMessage\",\r\n  \"businessKey\" : \"aBusinessKey\",\r\n  \"correlationKeys\" : {\r\n    \"aVariable\" : {\"value\" : \"aValue\", \"type\": \"String\"}\r\n  },\r\n  \"processVariables\" : {\r\n    \"aVariable\" : {\"value\" : \"aNewValue\", \"type\": \"String\", \r\n                    \"valueInfo\" : { \"transient\" : true }\r\n                  },\r\n    \"anotherVariable\" : {\"value\" : true, \"type\": \"Boolean\"}\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://{{camunda}}/engine-rest/message",
+							"protocol": "http",
+							"host": [
+								"{{camunda}}"
+							],
+							"path": [
+								"engine-rest",
+								"message"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Send Message Copy",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"messageName\": \"signatureComplete\",\r\n\"businessKey\": \"c1fc1f14-fc9a-45ed-9192-19d3720c42ed\",\r\n\"correlationKeys\" : {\r\n    \"signatureComplete\" : {\"value\" : \"aValue\", \"type\": \"String\"}\r\n  },\r\n\"processVariables\" : {\r\n    \"status\" : {\"value\" : true, \"type\": \"Boolean\"}\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/engine-rest/message",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"engine-rest",
+								"message"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

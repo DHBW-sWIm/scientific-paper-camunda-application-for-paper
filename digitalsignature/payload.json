@@ -1,0 +1,24 @@
+{ 
+    "document": 
+    {
+        "documentid": "cdbc8bbb-a1d8-4752-80fe-cb3113bb5a5f", 
+        "documentlink": "cdbc8bbb-a1d8-4752-80fe-cb3113bb5a5f"
+    }, 
+    "signees": 
+    { 
+        "1":[
+            {"name": " ", "surname": "Guest user", "email": "root@localhost"}
+            ],
+        "2": [
+            {"name":"null", "surname": "null", "email": "null"}
+            ],
+        "3": [
+            {"name": " ", "surname": "Guest user", "email": "root@localhost"}
+            ]
+    }, 
+    "callback": 
+    {
+        "link": "http://localhost:8080/engine-rest/message", 
+        "body": "{\"messageName\": \"signatureComplete\",\"businessKey\": \"cdbc8bbb-a1d8-4752-80fe-cb3113bb5a5f\", \"processVariables\" : {\"status\" : {\"value\" : completionValue, \"type\": \"Boolean\"}}}"
+    }
+}
