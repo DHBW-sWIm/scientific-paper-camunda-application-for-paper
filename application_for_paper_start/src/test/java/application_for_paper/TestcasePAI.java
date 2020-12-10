@@ -4,6 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,15 +25,18 @@ import org.camunda.bpm.model.bpmn.instance.FlowElement;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.InjectMocks;
+import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.camunda.demo.application_for_paper.DataBase;
 import com.camunda.demo.application_for_paper.FillDocument;
 import com.camunda.demo.application_for_paper.ReceiveApllication;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class TestcasePAI {
 	static final Logger logger = LoggerFactory.getLogger(TestcasePAI.class);
 	DelegateExecution execution = null;
@@ -51,7 +58,6 @@ public class TestcasePAI {
 		put("unternehmensvertreterNachname", "");
 		put("unternehmensvertreterVorname", "");
 		put("unternehmensvertreterFunktion", "");
-		put("applicationType", "PA I");
 	}};
 	
 	Map<String, String> values = new HashMap<String, String>(){{
@@ -71,12 +77,66 @@ public class TestcasePAI {
 		put("focus", "Softwareentwicklung");
 	}};
 	
+	@Mock
+	private DataBase db;
+	
+	@Mock
+	private Connection c;
+	
+	@Mock
+	private PreparedStatement stmtFillStudent;
+	
+	@Mock
+	private PreparedStatement stmtFillSup;
+	
+	@Mock
+	private ResultSet rsStudent;
+	
+	@Mock
+	private ResultSet rsSupervisor;
 	
 	@Rule
 	public ProcessEngineRule processEngineRule = new ProcessEngineRule();	
 	
 	@Before
-	public void setup() {
+	public void setup() throws ClassNotFoundException, SQLException {
+		assertNotNull(db);
+		Mockito.doNothing().when(db).close();
+		Mockito.when(
+				db.prepareQuery(
+						Mockito.matches(
+								"SELECT lastname, firstname, \"null\" as kurs, \"null\" as matrikelnr, email, phone1 FROM mdl_user WHERE id=?"
+								)
+						)
+				).thenReturn(stmtFillStudent);
+		Mockito.doNothing().when(stmtFillStudent).setString(Mockito.anyInt(), Mockito.anyString());
+		Mockito.when(stmtFillStudent.executeQuery()).thenReturn(rsStudent);
+		Mockito.when(rsStudent.first()).thenReturn(true);
+		Mockito.when(rsStudent.getString(1)).thenReturn("studentDB");
+		Mockito.when(rsStudent.getString(2)).thenReturn("testDB");
+		Mockito.when(rsStudent.getString(3)).thenReturn("null");
+		Mockito.when(rsStudent.getString(4)).thenReturn("null");
+		Mockito.when(rsStudent.getString(5)).thenReturn("test@db.com");
+		Mockito.when(rsStudent.getString(6)).thenReturn("01234567890");
+		/*
+		Mockito.when(
+				c.prepareStatement(
+						Mockito.matches(
+								"SELECT lastname, firstname, email, phone1, address, \"?\" as strasse, \"?\" as plz, city FROM mdl_user WHERE id=?"
+								)
+						)
+				).thenReturn(stmtFillSup);
+		Mockito.when(stmtFillSup.executeQuery()).thenReturn(rsSupervisor);
+		Mockito.when(rsSupervisor.first()).thenReturn(true);
+		Mockito.when(rsSupervisor.getString(1)).thenReturn("supervisorDB");
+		Mockito.when(rsSupervisor.getString(2)).thenReturn("test1DB");
+		Mockito.when(rsSupervisor.getString(3)).thenReturn("test@db.com");
+		Mockito.when(rsSupervisor.getString(4)).thenReturn("09876543210");
+		Mockito.when(rsSupervisor.getString(5)).thenReturn("Teststraße 1");
+		Mockito.when(rsSupervisor.getString(6)).thenReturn("?");
+		Mockito.when(rsSupervisor.getString(7)).thenReturn("?");
+		Mockito.when(rsSupervisor.getString(7)).thenReturn("Testcity");
+		*/
 		execution = new DelegateExecution() {
 			String businessKey = "";
 			HashMap<String, Object> vars = new HashMap<String, Object>();
@@ -465,7 +525,7 @@ public class TestcasePAI {
 		
 		boolean keysRight=true;
 		for (String key: this.app_info.keySet()) {
-			if (!app_info.containsKey(key)) {
+			if (!app_info.containsKey(key)&&key!="applicationType") {
 				logger.error(key);
 				keysRight=false;
 			}
@@ -477,16 +537,28 @@ public class TestcasePAI {
 				
 	}
 	
-	//Needs DB-Mock
 	@Test
 	public void testFillPDF() throws Exception {
+		
 		FillDocument task = new FillDocument();
+		task.setDB(db);
 		
 		for (String key: this.app_info.keySet()) {
 			this.execution.setVariable(key, this.app_info.get(key));
 		}
+		execution.setVariable("application_info", this.app_info);
+		execution.setVariable("applicationType", "PA_I");
 		
-		//task.execute(execution);
+		task.execute(execution);
+		
+		HashMap<String, String> res = (HashMap<String, String>) execution.getVariable("application_info");
+		
+		for (String key: res.keySet()) {
+			logger.info(key);
+		}
+		
+		
+		
 		
 	}
 	

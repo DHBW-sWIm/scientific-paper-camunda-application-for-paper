@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDDocumentCatalog;
@@ -20,13 +19,23 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FillDocument implements JavaDelegate {
 	private PDDocument doc;
-	private Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-
-	public FillDocument() {
-		logger.setLevel(Level.FINEST);
+	static final Logger logger = LoggerFactory.getLogger(FillDocument.class);
+	private DataBase db;
+	
+	public void setDB(DataBase db) {
+		this.db=db;
+	}
+	
+	public DataBase getDB() throws ClassNotFoundException {
+		if (this.db==null) {
+			this.db=new DataBase();
+		}
+		return this.db;
 	}
 
 	/*  studentNachname
@@ -67,16 +76,16 @@ public class FillDocument implements JavaDelegate {
 	 */
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		logger.fine("Starting to fill document");
+		logger.debug("Starting to fill document");
 		
 		String type = (String) execution.getVariable("applicationType");
-		HashMap<String, String> values = (HashMap<String, String>) execution.getVariable("applicationInfo");
+		HashMap<String, String> values = (HashMap<String, String>) execution.getVariable("application_info");
 		
 		doc = PDDocument.load(gettemplateFileForType(type));
 		
 		values = addStudentInfo(values, (String) execution.getVariable("stid"));
 		
-		if (!type.contentEquals("pa_1")) {
+		if (type!="PA_I") {
 			values = addScientificSupervisorInfo(values, (String)execution.getVariable("supid"));
 		}
 		
@@ -84,6 +93,7 @@ public class FillDocument implements JavaDelegate {
 		
 		saveDocument();
 		
+		this.db.close();
 
 	}
 	
@@ -93,15 +103,15 @@ public class FillDocument implements JavaDelegate {
 		
 		File template = null;
 		URL ressourcepath = null;
-		logger.fine(type);
-		if (type.equals("PA I")) {
+		logger.debug(type);
+		if (type=="PA_I") {
 			ressourcepath = getClass().getClassLoader().getResource("anmeldung_pa_1.pdf");
-		}else if (type.equals("PA II")) {
+		}else if (type=="PA_II") {
 			ressourcepath = getClass().getClassLoader().getResource("anmeldung_pa_2.pdf");
-		}else if (type.equals("BA")) {
+		}else if (type=="BA") {
 			ressourcepath = getClass().getClassLoader().getResource("anmeldung_ba.pdf");
 		}else {
-			logger.warning("The specified type could not be found");
+			logger.warn("The specified type could not be found");
 			throw new IllegalAccessException(String.format("The type %s is not permitted", type));
 		}
 		template = new File(ressourcepath.toURI());
@@ -123,21 +133,28 @@ public class FillDocument implements JavaDelegate {
 			key = field.getFullyQualifiedName();
 			
 			if (!values.containsKey(key)) {
-				logger.warning(String.format("The field %s could not be filled, no value present.", key));
+				logger.warn(String.format("The field %s could not be filled, no value present.", key));
 			}else {
-				field.setValue((String) values.get(key));
+				// TODO find out which field is kursInfo and what values should be filled
+				if (field.getFullyQualifiedName()!="kursInfo")
+					try {
+						field.setValue((String) values.get(key));
+					} catch(IllegalArgumentException e) {
+						e.printStackTrace();
+					}
 			}
 		}
 	}
 	
+	// TODO implement storage
 	public void saveDocument() throws IOException, URISyntaxException {
 		URI uri = getClass().getResource("/").toURI();
-		this.doc.save(uri.toString());
+		//this.doc.save(uri.toString());
 	}
 	
 	//studentNachname, studentVorname, studentKurs, studentMatrikelnummer, studentEmail, studentTelefon
 	public HashMap<String, String> addStudentInfo(HashMap<String, String> values, String stid) throws ClassNotFoundException, SQLException {
-		DataBase db = new DataBase();
+		DataBase db = getDB();
 		String query = "SELECT lastname, firstname, \"null\" as kurs, \"null\" as matrikelnr, email, phone1 FROM mdl_user WHERE id=?";
 		PreparedStatement stmt = db.prepareQuery(query);
 		
@@ -145,6 +162,9 @@ public class FillDocument implements JavaDelegate {
 		
 		ResultSet result = stmt.executeQuery();
 		db.close();
+		
+		assert result.first();
+		assert values!=null;
 		
 		values.put("studentNachname", result.getString(1));
 		values.put("studentVorname", result.getString(2));
@@ -164,7 +184,7 @@ public class FillDocument implements JavaDelegate {
 	//wissenschaftlicherbetreuerNachname, wissenschaftlicherbetreuerVorname, wissenschaftlicherbetreuerEmail, wissenschaftlicherbetreuerTelefon
 	//wissenschaftlicherbetreuerAdresse, wissenschaftlicherbetreuerStrasse, wissenschaftlicherbetreuerPostleitzahl, wissenschaftlicherbetreuerOrt
 	public HashMap<String, String> addScientificSupervisorInfo(HashMap<String, String> values, String id) throws ClassNotFoundException, SQLException {
-		DataBase db = new DataBase();
+		DataBase db = getDB();
 		String query = "SELECT lastname, firstname, email, phone1, address, \"?\" as strasse, \"?\" as plz, city FROM mdl_user WHERE id=?";
 		PreparedStatement stmt = db.prepareQuery(query);
 		stmt.setString(1, id);
